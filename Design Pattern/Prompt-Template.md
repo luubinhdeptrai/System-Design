@@ -21,4 +21,4 @@ Whenever I ask about a design pattern, explain it in a clear, professional, and 
 
 Keep the explanation beginner-friendly but technically accurate.
 
-Create a .md file and answer into it so I can easily track the content.
+Create a .md file in the folder Design Pattern and answer into it so I can easily track the content.
