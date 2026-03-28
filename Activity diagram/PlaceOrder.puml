@@ -1,0 +1,78 @@
+
+```plantuml
+@startuml
+title Food Delivery — Place Order (Activity Diagram)
+
+partition Customer {
+  start
+  :Browse restaurants & menu;
+  :Add items to cart;
+  :Confirm delivery address;
+  :Place order;
+}
+
+partition App {
+  :Create order draft;
+  :Calculate totals (tax/fees/discounts);
+}
+
+partition "Payment Service" {
+  :Authorize payment;
+}
+
+if (Payment authorized?) then (yes)
+  partition App {
+    :Submit order to restaurant;
+  }
+
+  partition Restaurant {
+    :Accept or reject order;
+  }
+
+  if (Restaurant accepts?) then (yes)
+    partition App {
+      fork
+        :Notify customer (order confirmed);
+      fork again
+        :Request courier assignment;
+      end fork
+    }
+
+    partition Courier {
+      :Accept delivery job;
+      :Pick up order;
+      :Deliver to customer;
+    }
+
+    partition App {
+      :Mark order completed;
+    }
+
+    partition Customer {
+      :Rate order;
+      stop
+    }
+
+  else (no)
+    partition App {
+      :Cancel order;
+      :Initiate refund;
+    }
+    partition Customer {
+      :Show "Restaurant rejected";
+      stop
+    }
+  endif
+
+else (no)
+  partition App {
+    :Show payment failure;
+  }
+  partition Customer {
+    :Retry payment or cancel;
+    stop
+  }
+endif
+
+@enduml
+```
